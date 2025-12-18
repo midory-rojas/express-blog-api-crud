@@ -57,4 +57,4 @@ const tipiDiCani = [
     },
 ];
 
-export { tipiDiCani }
+export default tipiDiCani;
