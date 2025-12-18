@@ -13,7 +13,18 @@ function index(req, res) {
 // Dettagli di un singolo post (cane) - SHOW
 function show(req,res) {
    const id = parseInt(req.params.id);
-   res.send(`dettagli di un singolo post di cane ${id}`);
+   //uso find 
+   const cane = caniArray.find((cane) => cane.id === id);
+   //uso la condizione
+   if (cane !== undefined) {
+    res.json(cane);
+   } else {
+    res.status(404); //Status 404
+    res.json({
+        error: "Not found",
+        message: "Cane non trovato",
+    });
+   }
 }
 
 // Creare un nuovo tipo di post (cane) - STORE
