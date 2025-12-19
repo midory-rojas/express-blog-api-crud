@@ -29,6 +29,7 @@ function show(req, res) {
 
 // Creare un nuovo tipo di post (cane) - STORE
 function store(req, res) {
+    //Dati--body
     const dati = req.body;
     console.log(dati);
 
@@ -38,8 +39,8 @@ function store(req, res) {
     if (dati.titolo === undefined || dati.titolo.length === 0) {
         res.status(400);
         return res.json({  //risposta json
-            error: "Client error",
-            message: "Il titolo è obbligatorio",
+            error: "Error del client",
+            message: "Il campo titolo è obbligatorio e non può essere vuoto",
         });
     }
 
@@ -48,7 +49,7 @@ function store(req, res) {
     console.log(newId);
 
     const newCane = {
-        id:newId,
+        id: newId,
         titolo: dati.titolo,
         contenuto: dati.contenuto,
         imagine: dati.imagine,
@@ -64,7 +65,43 @@ function store(req, res) {
 // Modificare un post di cane esistente - UPDATE
 function update(req, res) {
     const id = parseInt(req.params.id);
-    res.send(`modifica un post di cane esistente ${id}`);
+
+    //prendo ID dei dati con find
+    const cane = caniArray.find((cane) => cane.id === id);
+
+    //Faccio la condizione per controllare si il parametro esiste nell'array
+    // di post, se non esiste stampo status 404 con messagio di errore, not found
+
+      if (cane === undefined) {
+        res.status(404);
+        return res.json({
+            error: "Not found",
+            message: "Cane, non trovato",
+        });
+    }
+
+    //Dati--body
+
+    const dati = req.body;
+    console.log(dati);
+
+// Controllare la correttezza di dati nell'update, 
+// inviando nel caso errore 400
+// Condizione quando il client non inserisce il titolo o il dato è vuoto
+    if (dati.titolo === undefined || dati.titolo.length === 0) {
+        res.status(400);
+        return res.json ({
+            error:"Error del client",
+            message: "Il campo titolo è obbligatorio e non può essere vuoto",
+        });
+    }
+
+    cane.titolo = dati.titolo;
+    cane.contenuto = dati.contenuto;
+    cane.immagine = dati.immagine;
+    cane.tags = dati.tags;
+
+    res.json(cane);
 }
 
 // Modificare solo alcuni dati di un post di cane esistente - MODIFY
@@ -82,8 +119,7 @@ function destroy(req, res) {
     const caneIndex = caniArray.findIndex((cane) => cane.id === id);
     //console.log(caneIndex);
 
-    //Condixione
-
+    //Condizione
     if (caneIndex === -1) {
         res.status(404); //Status 404 not found
         res.json({
