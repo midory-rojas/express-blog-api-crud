@@ -29,7 +29,35 @@ function show(req, res) {
 
 // Creare un nuovo tipo di post (cane) - STORE
 function store(req, res) {
-    res.send("creo un nuovo tipo di post di cane");
+    const dati = req.body;
+    console.log(dati);
+
+    //Faccio la condizione si il client non ha inserito corretamente il  titolo
+    //status 400
+
+    if (dati.titolo === undefined || dati.titolo.length === 0) {
+        res.status(400);
+        return res.json({  //risposta json
+            error: "Client error",
+            message: "Il titolo è obbligatorio",
+        });
+    }
+
+    //Calcolo del succesivo id
+    const newId = caniArray[caniArray.length - 1].id + 1
+    console.log(newId);
+
+    const newCane = {
+        id:newId,
+        titolo: dati.titolo,
+        contenuto: dati.contenuto,
+        imagine: dati.imagine,
+        tags: dati.tags,
+    };
+    caniArray.push(newCane); //Aggiungo un nuovo tipo di cane con push
+
+    res.status(201); //risposta della creazione con status 201
+    res.json(newCane);
 }
 
 

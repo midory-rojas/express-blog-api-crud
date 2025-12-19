@@ -12,6 +12,9 @@ const port = 3000;
 //Creo una cartella public per inserire le immagine e accedere facilmente dal browser
 app.use(express.static("public"));
 
+//attivo la decodifica (parser) del body delle richieste
+app.use(express.json());
+
 //Imposto la rotta
 app.use("/posts", postsRouter);
 
