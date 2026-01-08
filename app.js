@@ -29,6 +29,11 @@ app.get("/", (req, res) => {
     res.send("Benvenuti al blog dei cani più belli e amorevooli");
 });
 
+//Faccio il test /error
+app.get("/error", (req, res) => {
+    throw Error("Questo è un errore forzato.");
+});
+
 //Imposto errorHandler e notFound(sempre notFound all'ultimo perche il browser lo legge a cascada)
 app.use(errorHandler);
 app.use(notFound);

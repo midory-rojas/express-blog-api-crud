@@ -53,7 +53,27 @@
 
 404 per la rotta SHOW e DESTROY.
 In UPDATE--> 404 e un messaggio d’errore, sempre in formato JSON.
-Controllo la correttezza di dati nello STORE e UPDATE, inviando nel caso errore 400
+Controllo la correttezza di dati nello STORE e UPDATE, inviando nel caso errore 400.
+
+## Implementazione Middleware e Gestione Errori Centralizzata
+Oggi ho migliorato l'architettura della mia API Express introducendo una gestione per le rotte non esistenti e per gli errori di sistema, centralizzando tutto nella cartella middlewares.
+
+-  [x] Struttura e logica dei file --- notFound.js:
+
+Questo middleware cattura tutte le richieste effettuate verso endpoint che non sia stata definita.
+
+Risponde con uno status code 404 e un messaggio JSON chiaro: "Pagina non trovata dal server".
+
+-  [x] Struttura e Logica del file --- errorHandler.js:
+
+È un middleware specializzato (riconoscibile dai 4 parametri err, req, res, next) che gestisce qualsiasi errore scatenato dall'applicazione.
+
+Effettua il console.error(err.stack) per permettere di fare debug sul terminale, ma risponde al client con uno status code 500 e un oggetto JSON che contiene il messaggio dell'errore.
+
+ -  [x] Integrazione in app.js
+Per rendere questi strumenti disponibili in tutta l'applicazione, li ho importati e registrati dopo le route cosi può stare disponibile in tutta la pagina ed anche perche il browser lo legge in cascada. In questo modo, Express li esegue solo se nessuna rotta precedente ha risposto alla richiesta.
+
+Test di Errore: Ho creato una rotta di test /error che lancia intenzionalmente un Error per verificare che il middleware errorHandler intercetti correttamente il problema e restituisca la risposta JSON.
 
 
 
