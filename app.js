@@ -29,11 +29,16 @@ app.get("/", (req, res) => {
     res.send("Benvenuti al blog dei cani più belli e amorevooli");
 });
 
-//
+//Imposto errorHandler e notFound(sempre notFound all'ultimo perche il browser lo legge a cascada)
 app.use(errorHandler);
 app.use(notFound);
 
 
-app.listen(port, () => {
+app.listen(port, (err) => {
+    if(err
+    ) {
+        return console.error(`Error durante l'avvio del server:`, err);
+    } else {
     console.log(`Íl server è partito sulla porta ${port}`);
+    }
 });
