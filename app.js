@@ -2,6 +2,12 @@
 import express from "express";
 //Importo postRouter della cartella router
 import postsRouter from "./routers/posts.js";
+//Importo page notFound della cartella middlewares
+import notFound from "./middlewares/notFound.js";
+//Importo page errorHandler della cartella middlewares
+import errorHandler from "./middlewares/errorHandler.js";
+
+
 
 //Invoco express
 const app = express();
@@ -21,7 +27,12 @@ app.use("/posts", postsRouter);
 //Faccio la prova con la prima risposta e la verifico in postman
 app.get("/", (req, res) => {
     res.send("Benvenuti al blog dei cani più belli e amorevooli");
-})
+});
+
+//
+app.use(errorHandler);
+app.use(notFound);
+
 
 app.listen(port, () => {
     console.log(`Íl server è partito sulla porta ${port}`);
